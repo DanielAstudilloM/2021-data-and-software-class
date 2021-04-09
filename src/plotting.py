@@ -23,6 +23,8 @@ def read_data(filename,delimiter=',',starting_row=0):
     return temperature_data
 
 def process_data(temperature_data):
+    """Transforms the temperature from the data file
+     into Kelvin and returns variable"""
     # Compute a new column by multiplying column number 1 to Kelvin
     temperature_kelvin = (temperature_data[:,1,None] - 32) * 5/9 + 273
 
@@ -31,20 +33,26 @@ def process_data(temperature_data):
     return processed_temperature_data
 
 def plot_data(processed_temperature_data, plot_filename):
+    """Makes a plot from the temperature in kelvin"""
     # Create a figure of the processed data
     temperature_figure = plt.figure()
-    plt.bar (processed_temperature_data[:,0],processed_temperature_data[:,2], width=35, color='blue')
+    plt.bar (processed_temperature_data[:,0],
+         processed_temperature_data[:,2],
+         width=35,
+         color='blue')
 
     plt.show(block=True)
     temperature_figure.savefig(plot_filename)
 
 
 def convert_data(filename, output_filename):
+    """Converts data into a json output"""
     all_data = pd.read_csv(filename, index_col='Date', header=4)
     all_data.info()
     all_data.to_json(output_filename)
 
 def plot():
+    """Runs all functions to produce plots and convert data"""
     input_file = "110-tavg-12-12-1950-2020.csv"
     plot_file = "temperature-over-time.pdf"
     json_output_file = "data_output.json"
